@@ -5,7 +5,7 @@
     "baseUrl": "./",
     "moduleResolution": "node",
     "paths": {
-      "@/*": [
+      "@/*": [ // 为src文件夹配置别名
         "src/*"
       ]
     },
@@ -15,5 +15,9 @@
       "dom.iterable",
       "scripthost"
     ]
-  }
+  },
+  "exclude": [ // 以下文件夹无法使用src文件夹的别名
+    "node_modules",
+    "dist"
+  ],
 }
