@@ -12,18 +12,30 @@ export default new VueRouter({
         {
             path: '/home',
             component: Home,
+            meta: {
+                HomeFooterShow: true,
+            }
         },
         {
             path: '/login',
             component: Login,
+            meta: {
+                HomeFooterShow: false,
+            }
         },
         {
             path: '/register',
             component: Register,
+            meta: {
+                HomeFooterShow: false,
+            }
         },
         {
             path: '/search',
             component: Search,
+            meta: {
+                HomeFooterShow: true,
+            }
         },
         {
             // 重定向，访问/时，重定向到首页

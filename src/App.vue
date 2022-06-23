@@ -2,23 +2,26 @@
   <div id="app">
     <!-- <img alt="Vue logo" src="./assets/logo.png"> -->
     <!-- <HelloWorld msg="Welcome to Your Vue.js App"/> -->
-    <HomeHeaderVue></HomeHeaderVue>
+    <HomeHeader></HomeHeader>
     <router-view></router-view>
-    <HomeFooterVue></HomeFooterVue>
+    <!-- HomeFooter在主页、搜索页显示，在登录、注册页隐藏 -->
+    <HomeFooter
+      v-show="$route.meta.HomeFooterShow">
+    </HomeFooter>
   </div>
 </template>
 
 <script>
 // import HelloWorld from './components/HelloWorld.vue'
-import HomeHeaderVue from './components/HomeHeader'
-import HomeFooterVue from './components/HomeFooter'
+import HomeHeader from './components/HomeHeader'
+import HomeFooter from './components/HomeFooter'
 
 export default {
   name: 'App',
   components: {
     // HelloWorld
-    HomeHeaderVue,
-    HomeFooterVue
+    HomeHeader,
+    HomeFooter,
   }
 }
 </script>
