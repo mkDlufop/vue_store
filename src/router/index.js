@@ -31,7 +31,7 @@ export default new VueRouter({
             }
         },
         {
-            path: '/search/:keyword',
+            path: '/search/:keyword?', // 添加?，可指定params参数可传可不传
             name: 'search',
             component: Search,
             meta: {
