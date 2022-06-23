@@ -1,14 +1,18 @@
 <template>
     <div>
-        首页
+        <TypeNav />
     </div>
 </template>
 
 <script>
-export default {
+import TypeNav from './TypeNav'
 
+export default {
+    components: {
+        TypeNav,        
+    },
 }
 </script>
 
-<style lang="less">
+<style scoped lang="less">
 </style>
