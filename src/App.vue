@@ -3,7 +3,7 @@
     <!-- <img alt="Vue logo" src="./assets/logo.png"> -->
     <!-- <HelloWorld msg="Welcome to Your Vue.js App"/> -->
     <HomeHeaderVue></HomeHeaderVue>
-    <!-- <router-view></router-view> -->
+    <router-view></router-view>
     <HomeFooterVue></HomeFooterVue>
   </div>
 </template>
