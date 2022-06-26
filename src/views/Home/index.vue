@@ -12,7 +12,7 @@
 </template>
 
 <script>
-import TypeNav from './TypeNav'
+import TypeNav from '@/components/TypeNav'
 import ListContainer from './ListContainer'
 import TodayRecommend from './TodayRecommend'
 import GoodsRank from './GoodsRank'
