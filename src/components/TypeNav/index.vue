@@ -112,7 +112,6 @@ export default {
         },
     },
     mounted() {
-        this.$store.dispatch("categoryList");
         if(this.$route.path === '/search') this.sortShow = false;
     },
 }
