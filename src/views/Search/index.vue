@@ -1,18 +1,16 @@
 <template>
     <div>
-        搜索
-        {{ keyword }}
-        {{ $route.query.keyword }}
-        {{ $route.query.categoryName + ' ' }}
-        {{ $route.query.category1Id + ' ' +
-            $route.query.category2Id + ' ' +
-            $route.query.category3Id
-        }}
+        <TypeNav />
     </div>
 </template>
 
 <script>
+import TypeNav from '@/components/TypeNav';
+
 export default {
+    components: {
+        TypeNav,
+    },
     data() {
         return {
             keyword: this.$route.params.keyword,
