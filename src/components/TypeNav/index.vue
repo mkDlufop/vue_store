@@ -5,14 +5,16 @@
             <div @mouseleave="resetIndex">
                 <h2 class="all">全部商品分类</h2>
                 <div class="sort">
-                    <div class="all-sort-list2">
+                    <div class="all-sort-list2" @click="goSearch">
                         <div class="item"
                             v-for="(c1,index) in categoryList"
                             :key="c1.categoryId"
                             :class="{current: currentIndex == index}"
                         >
                             <h3 @mouseenter="changeIndex(index)">
-                                <a href="">{{ c1.categoryName }}</a>
+                                <a :data-categoryName="c1.categoryName"
+                                    :data-category1Id="c1.categoryId"
+                                >{{ c1.categoryName }}</a>
                             </h3>
                             <div class="item-list clearfix"
                                 :style="{display: currentIndex == index ? 'block' : 'none'}"
@@ -20,11 +22,15 @@
                                 <div class="subitem" v-for="(c2,index) in c1.categoryChild" :key="c2.catogoryId">
                                     <dl class="fore">
                                         <dt>
-                                            <a href="">{{ c2.categoryName }}</a>
+                                            <a :data-categoryName="c2.categoryName"
+                                                :data-category2Id="c2.categoryId"
+                                            >{{ c2.categoryName }}</a>
                                         </dt>
                                         <dd>
                                             <em v-for="(c3,index) in c2.categoryChild" :key="c3.catogoryId">
-                                                <a href="">{{ c3.categoryName }}</a>
+                                                <a :data-categoryName="c3.categoryName"
+                                                    :data-category3Id="c3.categoryId"
+                                                >{{ c3.categoryName }}</a>
                                             </em>
                                         </dd>
                                     </dl>
@@ -72,6 +78,30 @@ export default {
         },50),
         resetIndex() {
             this.currentIndex = -1;
+        },
+        goSearch(event) {
+            // 业务：携带参数跳转到搜索页
+            //      为什么不用声明式导航？
+            //          <router-link>是一个组件，当服务器数据返回后，页面会循环出很多个组件，
+            //          一瞬间创建很多个组件实例很耗内存，因此很容易造成卡顿现象。
+            //      为什么不给<a>绑定点击事件？
+            //          给每一个<a>都绑定一个点击事件，页面会出现很多回调函数。使用事件委派就
+            //          只用给最外层的<div>绑定一个点击事件。但使用事件委派有两个问题：
+            //              1，点击事件触发的时候分不清是哪个标签触发的；
+            //              2，回调里面怎么拿到不同的categoryId。
+            //          这时使用自定义属性可以解决上述的问题。
+            // 解决方案：编程式导航+事件委派+html标签自定义属性
+            let element = event.target;
+            let { categoryname, category1id, category2id, category3id } = element.dataset;
+            let location = { name: 'search' };
+            let query = { categoryName: categoryname };
+            if(categoryname) {
+                if(category1id) query.category1Id = category1id;
+                else if(category2id) query.category2Id = category2id;
+                else query.category3Id = category3id;
+            }
+            location.query = query;
+            this.$router.push(location);
         },
     },
     mounted() {
