@@ -8,6 +8,7 @@
 import TypeNav from '@/components/TypeNav';
 
 export default {
+    name: 'search',
     components: {
         TypeNav,
     },
