@@ -6,8 +6,12 @@
                 <!--banner轮播-->
                 <div class="swiper-container" id="mySwiper">
                     <div class="swiper-wrapper">
-                        <div class="swiper-slide">
-                            <img src="./images/banner1.jpg" />
+                        <div class="swiper-slide"
+                            v-for="(carousel,index) in bannerList"
+                            :key="carousel.id"
+                        >
+                            <!-- <img src="./images/banner1.jpg" /> -->
+                            <img :src="carousel.imgUrl" />
                         </div>
                         <!-- <div class="swiper-slide">
                             <img src="./images/banner2.jpg" />
@@ -112,12 +116,55 @@
 
 <script>
 import { mapState } from 'vuex';
+import Swiper from 'swiper';
+import 'swiper/css/swiper.min.css';
+
 export default {
     name: 'ListContainer',
     computed: {
         ...mapState({
             bannerList: state => state.home.bannerList,
         }),
+    },
+    watch: {
+        bannerList: {
+            handler() {
+                this.$nextTick(() => {
+                    // 当页面结构加载完整后，new一个Swiper实例用来控制轮播图
+                    var mySwiper = new Swiper(document.querySelector(".swiper-container"), {
+                        direction: "horizontal", // 设置轮播图防线
+                        loop: true, // 开启循环模式
+                        pagination: { // 分页器
+                            el: ".swiper-pagination",
+                            type: "bullets", // 分页器类型
+                            clickable: true, // 点击分页器切换图片
+                        },
+                        navigation: { // 前进后退按钮
+                            nextEl: ".swiper-button-next",
+                            prevEl: ".swiper-button-prev",
+                        },
+                        autoplay: { // 自动轮播
+                          delay: 2000,
+                          //新版本的写法：目前是5版本
+                          // pauseOnMouseEnter: true,
+                          //如果设置为true，当切换到最后一个slide时停止自动切换
+                          stopOnLastSlide: true,
+                          //用户操作swiper之后，是否禁止autoplay
+                          disableOnInteraction: false,
+                        },
+                        // effect: "cube", // 切换效果
+                    });
+                    //鼠标进入停止轮播
+                    mySwiper.el.onmouseover = function () {
+                      mySwiper.autoplay.stop();
+                    };
+                    //鼠标离开开始轮播
+                    mySwiper.el.onmouseout = function () {
+                      mySwiper.autoplay.start();
+                    };
+                });
+            }
+        }
     },
     mounted() {
         this.$store.dispatch("getBannerList");
