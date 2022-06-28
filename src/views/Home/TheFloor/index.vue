@@ -94,8 +94,18 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
+
 export default {
     name: 'TheFloor',
+    computed: {
+        ...mapState({
+            floorList: state => state.home.floorList,
+        })
+    },
+    mounted() {
+        this.$store.dispatch("getFloorList");
+    }
 }
 </script>
 

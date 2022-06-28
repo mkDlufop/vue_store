@@ -21,6 +21,7 @@ import TheFloor from './TheFloor'
 import TheBrand from './TheBrand'
 
 export default {
+    name: 'home',
     components: {
         TypeNav,
         ListContainer,
