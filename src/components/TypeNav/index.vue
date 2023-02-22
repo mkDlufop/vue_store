@@ -119,10 +119,10 @@ export default {
                 if(category1id) query.category1Id = category1id;
                 else if(category2id) query.category2Id = category2id;
                 else query.category3Id = category3id;
+                location.query = query;
+                location.params = this.$route.params;
+                this.$router.push(location);
             }
-            location.query = query;
-            location.params = this.$route.params;
-            this.$router.push(location);
         },
         enterAll() {
             this.sortShow = true;
