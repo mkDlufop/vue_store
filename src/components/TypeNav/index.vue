@@ -2,6 +2,7 @@
     <!-- 商品分类导航 -->
     <div class="type-nav">
         <div class="container">
+            <!-- 在以下三级联动中使用事件委托 -->
             <div @mouseleave="resetIndex" @mouseenter="enterAll">
                 <h2 class="all">全部商品分类</h2>
                 <transition name="sort">
@@ -17,6 +18,7 @@
                                         :data-category1Id="c1.categoryId"
                                     >{{ c1.categoryName }}</a>
                                 </h3>
+                                <!-- 二级、三级分类 -->
                                 <div class="item-list clearfix"
                                     :style="{display: currentIndex == index ? 'block' : 'none'}"
                                 >
@@ -77,6 +79,20 @@ export default {
     },
     methods: {
         changeIndex: throttle(function(index){
+            // 分析用户划过一级分类：
+            // （index：鼠标移上某一个一级分类的元素的索引值）
+            // - 用户慢慢操作：鼠标进入每一个一级分类 h3，都会触发鼠标进入事件。
+            // - 用户快速划过：本身全部的一级都应该触发鼠标进入事件，但是经过测试，只有部分 h3
+            //    触发了。
+            // 这是因为用户行为过快，导致浏览器反应不过来。如果当前回调函数中有大量业务，有可能
+            // 出现卡顿现象。这里可以使用节流来解决卡顿的问题。
+            // 
+            // 防抖：前面的所有触发都被取消，只有最后一次触发会被执行，且最后一次触发是在规定的时间
+            //     之后才会被执行。
+            //     例子：搜索框中输入文字，在最后一个字符输入完成后再等一段时间才发送 ajax 请求。
+            // 节流：在规定的间隔时间范围内不会重复触发回调，只有大于这个时间间隔才会触发回调，把频繁
+            //     触发变为少量触发。
+            //     例子：快速点击轮播图的按钮，但规定它 1s 内只切换一次。
             this.currentIndex = index;
         },50),
         resetIndex() {
