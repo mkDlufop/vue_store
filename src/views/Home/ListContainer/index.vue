@@ -4,7 +4,7 @@
         <div class="sortList clearfix">
             <div class="center">
                 <!--banner轮播-->
-                <div class="swiper-container" id="mySwiper">
+                <div class="swiper-container" ref="bannerSwiper">
                     <div class="swiper-wrapper">
                         <div class="swiper-slide"
                             v-for="(carousel,index) in bannerList"
@@ -130,7 +130,7 @@ export default {
                 //    nextTick: 在下次 DOM 更新 循环结束 之后执行延迟回调。在修改数据之后立即使用这个方法，获取更新后的 DOM。
                 this.$nextTick(() => {
                     // 当页面结构加载完整后，new一个Swiper实例用来控制轮播图
-                    var mySwiper = new Swiper(document.querySelector(".swiper-container"), {
+                    var mySwiper = new Swiper(this.$refs.bannerSwiper, {
                         direction: "horizontal", // 设置轮播图方向
                         loop: true, // 开启循环模式
                         pagination: { // 分页器

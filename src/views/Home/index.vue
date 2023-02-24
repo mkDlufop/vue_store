@@ -5,8 +5,7 @@
         <TodayRecommend />
         <GoodsRank />
         <GuessYouLike />
-        <TheFloor />
-        <TheFloor />
+        <TheFloor v-for="(floor, index) in floorList" :key="floor.id" :floorList="floor"/>
         <TheBrand />
     </div>
 </template>
@@ -19,6 +18,7 @@ import GoodsRank from './GoodsRank'
 import GuessYouLike from './GuessYouLike'
 import TheFloor from './TheFloor'
 import TheBrand from './TheBrand'
+import { mapState } from 'vuex'
 
 export default {
     name: 'home',
@@ -31,6 +31,14 @@ export default {
         TheFloor,
         TheBrand,
     },
+    computed: {
+        ...mapState({
+            floorList: state => state.home.floorList,
+        })
+    },
+    mounted() {
+        this.$store.dispatch("getFloorList"); // 获取 TheFloor 组件所需的楼层数据
+    }
 }
 </script>
 
