@@ -10,7 +10,6 @@
                             v-for="(carousel,index) in bannerList"
                             :key="carousel.id"
                         >
-                            <!-- <img src="./images/banner1.jpg" /> -->
                             <img :src="carousel.imgUrl" />
                         </div>
                         <!-- <div class="swiper-slide">
@@ -18,9 +17,6 @@
                         </div>
                         <div class="swiper-slide">
                             <img src="./images/banner3.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img src="./images/banner4.jpg" />
                         </div> -->
                     </div>
                     <!-- 如果需要分页器 -->
@@ -116,8 +112,8 @@
 
 <script>
 import { mapState } from 'vuex';
-import Swiper from 'swiper';
-import 'swiper/css/swiper.min.css';
+import Swiper from 'swiper'; // 引包
+import 'swiper/css/swiper.min.css'; // 引入 Swiper 的样式
 
 export default {
     name: 'ListContainer',
@@ -129,10 +125,13 @@ export default {
     watch: {
         bannerList: {
             handler() {
+                // 只有在页面结构加载完整后，new 一个 Swiper 实例才可以实现轮播图的效果，否则会没有效果。
+                // 为了解决该问题，[可以把 new 的过程放在一个定时器里]或者[使用 watch + nextTick]。
+                //    nextTick: 在下次 DOM 更新 循环结束 之后执行延迟回调。在修改数据之后立即使用这个方法，获取更新后的 DOM。
                 this.$nextTick(() => {
                     // 当页面结构加载完整后，new一个Swiper实例用来控制轮播图
                     var mySwiper = new Swiper(document.querySelector(".swiper-container"), {
-                        direction: "horizontal", // 设置轮播图防线
+                        direction: "horizontal", // 设置轮播图方向
                         loop: true, // 开启循环模式
                         pagination: { // 分页器
                             el: ".swiper-pagination",
