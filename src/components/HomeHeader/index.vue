@@ -56,8 +56,8 @@ export default {
     },
     methods: {
         goSearch() {
-        // 指定params参数可传可不传，如果传递空串，url会出问题，此时可使用undefined解决
-        // this.$router.push({ name: 'search', params: { keyword: '' || undefined }}); 
+            // 指定 params 参数可传可不传，如果传递空串，url 会出问题，此时可使用 undefined 解决
+            // this.$router.push({ name: 'search', params: { keyword: '' || undefined }}); 
             this.$router.push({
                 name: 'search',
                 params: { keyword: this.keyword || undefined },

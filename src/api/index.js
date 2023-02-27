@@ -16,3 +16,10 @@ export const reqBannerList = () => requestsMock.get('/banners')
 
 // 获取首页楼层列表
 export const reqFloorList = () => requestsMock.get('/floors')
+
+// 获取搜索模块数据
+export const reqSearchInfo = (params) => requests({
+    url: '/list',
+    method: 'post',
+    data: params,
+})
