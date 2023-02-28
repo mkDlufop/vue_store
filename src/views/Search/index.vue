@@ -134,54 +134,65 @@ import TypeNav from "@/components/TypeNav";
 import { mapGetters } from "vuex";
 
 export default {
-    name: "Search",
-    computed: {
-        ...mapGetters(["goodsList"]),
+  name: "Search",
+  computed: {
+    ...mapGetters(["goodsList"]),
+  },
+  watch: {
+    // 监听路由信息的变化：路由信息变化时，重新整理请求参数，发送请求，获取新的 Search 模块的数据
+    $route() {
+      Object.assign(this.searchParams, this.$route.query, this.$route.params);
+      this.getSearchData();
+      // 每次发完请求后，把一、二、三级分类的 id 清空，让它接受下一次对应的一、二、三级 id
+      this.category1Id = "";
+      this.category2Id = "";
+      this.category3Id = "";
     },
-    data() {
-        return {
-            searchParams: {
-                // 一级分类的 id
-                category1Id: this.$route.query.category1Id,
-                // 二级分类的 id
-                category2Id: this.$route.query.category2Id,
-                // 三级分类的 id
-                category3Id: this.$route.query.category3Id,
-                // 分类名字
-                categoryName: this.$route.query.categoryName,
-                // 关键字
-                keyword: this.$route.params.keyword,
-                // 排序
-                order: "",
-                // 表示当前第几页
-                pageNo: 1,
-                // 表示每一页展示的数据
-                pageSize: 3,
-                // 平台商品属性操作要带的参数
-                props: [],
-                // 品牌
-                trademark: "",
-            },
-        };
+  },
+  data() {
+    return {
+      searchParams: {
+        // 一级分类的 id
+        category1Id: this.$route.query.category1Id,
+        // 二级分类的 id
+        category2Id: this.$route.query.category2Id,
+        // 三级分类的 id
+        category3Id: this.$route.query.category3Id,
+        // 分类名字
+        categoryName: this.$route.query.categoryName,
+        // 关键字
+        keyword: this.$route.params.keyword,
+        // 排序
+        order: "",
+        // 表示当前第几页
+        pageNo: 1,
+        // 表示每一页展示的数据
+        pageSize: 3,
+        // 平台商品属性操作要带的参数
+        props: [],
+        // 品牌
+        trademark: "",
+      },
+    };
+  },
+  components: {
+    SearchSelector,
+    TypeNav,
+  },
+  methods: {
+    // 向服务器发送请求获取 Search 模块的数据（根据不同参数返回不同数据）
+    getSearchData() {
+      this.$store.dispatch("getSearchList", this.searchParams);
     },
-    components: {
-        SearchSelector,
-        TypeNav,
-    },
-    methods: {
-        // 向服务器发送请求获取 Search 模块的数据（根据不同参数返回不同数据）
-        getSearchData() {
-            this.$store.dispatch("getSearchList", this.searchParams);
-        },
-    },
-    beforeMount() {
-        // 在发送请求前更新 searchParams 的数据（该逻辑也可以放在 mounted 里）
-        Object.assign(this.searchParams, this.$route.query, this.$route.params);
-    },
-    mounted() {
-        // 获取一次搜索模块的数据
-        this.getSearchData();
-    },
+  },
+  beforeMount() {
+    // 在发送请求前更新 searchParams 的数据（该逻辑也可以放在 mounted 里）
+    Object.assign(this.searchParams, this.$route.query, this.$route.params);
+  },
+  mounted() {
+    // 获取一次搜索模块的数据
+    this.getSearchData();
+  },
 };
 </script>
 
