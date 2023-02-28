@@ -49,23 +49,21 @@
           <div class="sui-navbar">
             <div class="navbar-inner filter">
               <ul class="sui-nav">
-                <li class="active">
-                  <a href="#">综合</a>
+                <li :class="{ active: isOne }" @click="clickOrder('1')">
+                  <a
+                    >综合
+                    <span v-show="isOne">
+                      {{ isDesc ? "&#9660;" : "&#9650;" }}
+                    </span>
+                  </a>
                 </li>
-                <li>
-                  <a href="#">销量</a>
-                </li>
-                <li>
-                  <a href="#">新品</a>
-                </li>
-                <li>
-                  <a href="#">评价</a>
-                </li>
-                <li>
-                  <a href="#">价格⬆</a>
-                </li>
-                <li>
-                  <a href="#">价格⬇</a>
+                <li :class="{ active: isTwo }" @click="clickOrder('2')">
+                  <a
+                    >价格
+                    <span v-show="isTwo">
+                      {{ isDesc ? "&#9660;" : "&#9650;" }}
+                    </span>
+                  </a>
                 </li>
               </ul>
             </div>
@@ -160,6 +158,15 @@ export default {
   name: "Search",
   computed: {
     ...mapGetters(["goodsList"]),
+    isOne() {
+      return this.searchParams.order.indexOf("1") != -1;
+    },
+    isTwo() {
+      return this.searchParams.order.indexOf("2") != -1;
+    },
+    isDesc() {
+      return this.searchParams.order.indexOf("desc") != -1;
+    },
   },
   watch: {
     // 监听路由信息的变化：路由信息变化时，重新整理请求参数，发送请求，获取新的 Search 模块的数据
@@ -185,8 +192,8 @@ export default {
         categoryName: this.$route.query.categoryName,
         // 关键字
         keyword: this.$route.params.keyword,
-        // 排序
-        order: "",
+        // 排序：初始状态为 综合|降序
+        order: "1:desc",
         // 表示当前第几页
         pageNo: 1,
         // 表示每一页展示的数据
@@ -248,6 +255,18 @@ export default {
       let props = `${attr.attrId}:${attrValue}:${attr.attrName}`;
       if (this.searchParams.props.indexOf(props) == -1)
         this.searchParams.props.push(props);
+      this.getSearchData();
+    },
+    clickOrder(flag) {
+      let originFlag = this.searchParams.order.split(":")[0];
+      let originSort = this.searchParams.order.split(":")[1];
+      if (flag == originFlag) {
+        this.searchParams.order = `${originFlag}:${
+          originSort == "asc" ? "desc" : "asc"
+        }`;
+      } else {
+        this.searchParams.order = `${flag}:desc}`;
+      }
       this.getSearchData();
     },
   },
