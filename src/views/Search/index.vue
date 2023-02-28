@@ -10,16 +10,39 @@
               <a href="#">全部结果</a>
             </li>
           </ul>
+          <!-- 分类的面包屑 -->
           <ul class="fl sui-tag">
-            <li class="with-x">手机</li>
-            <li class="with-x">iphone<i>×</i></li>
-            <li class="with-x">华为<i>×</i></li>
-            <li class="with-x">OPPO<i>×</i></li>
+            <li class="with-x" v-if="searchParams.categoryName">
+              {{ searchParams.categoryName }}
+              <i @click="removeCategoryName">x</i>
+            </li>
+            <!-- 关键字的面包屑 -->
+            <li class="with-x" v-if="searchParams.keyword">
+              {{ searchParams.keyword }}
+              <i @click="removeKeyword">x</i>
+            </li>
+            <!-- 品牌的面包屑 -->
+            <li class="with-x" v-if="searchParams.trademark">
+              {{ searchParams.trademark.split(":")[1] }}
+              <i @click="removeTrademark">x</i>
+            </li>
+            <!-- 平台的售卖的属性值的面包屑 -->
+            <li
+              class="with-x"
+              v-for="(attrValue, index) in searchParams.props"
+              :key="index"
+            >
+              {{ attrValue.split(":")[1] }}
+              <i @click="removeAttrValue(index)">x</i>
+            </li>
           </ul>
         </div>
 
         <!--selector-->
-        <SearchSelector />
+        <SearchSelector
+          @clickTrademark="clickTrademark"
+          @clickAttr="clickAttr"
+        />
 
         <!--details-->
         <div class="details clearfix">
@@ -168,7 +191,7 @@ export default {
         pageNo: 1,
         // 表示每一页展示的数据
         pageSize: 3,
-        // 平台商品属性操作要带的参数
+        // 平台售卖属性操作要带的参数
         props: [],
         // 品牌
         trademark: "",
@@ -183,6 +206,49 @@ export default {
     // 向服务器发送请求获取 Search 模块的数据（根据不同参数返回不同数据）
     getSearchData() {
       this.$store.dispatch("getSearchList", this.searchParams);
+    },
+    // 移除分类的名字
+    removeCategoryName() {
+      this.searchParams.categoryName = "";
+      this.category1Id = "";
+      this.category2Id = "";
+      this.category3Id = "";
+      this.getSearchData();
+      // 修改地址栏的信息
+      if (this.$route.params) {
+        this.$router.push({ name: "search", params: this.$route.params });
+      }
+    },
+    // 移除关键字
+    removeKeyword() {
+      this.searchParams.keyword = "";
+      this.getSearchData();
+      // 通知 HomeHeader 组件清除关键字
+      this.$bus.$emit("clearKeyword");
+      // 修改地址栏的信息
+      if (this.$route.query) {
+        this.$router.push({ name: "search", query: this.$route.query });
+      }
+    },
+    // 移除品牌
+    removeTrademark() {
+      this.searchParams.trademark = "";
+      this.getSearchData();
+    },
+    // 移除平台售卖属性
+    removeAttrValue(index) {
+      this.searchParams.props.splice(index, 1);
+      this.getSearchData();
+    },
+    clickTrademark(trademark) {
+      this.searchParams.trademark = `${trademark.tmId}:${trademark.tmName}`;
+      this.getSearchData();
+    },
+    clickAttr(attr, attrValue) {
+      let props = `${attr.attrId}:${attrValue}:${attr.attrName}`;
+      if (this.searchParams.props.indexOf(props) == -1)
+        this.searchParams.props.push(props);
+      this.getSearchData();
     },
   },
   beforeMount() {
