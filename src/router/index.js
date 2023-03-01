@@ -75,5 +75,9 @@ export default new VueRouter({
             path: '*',
             redirect: '/home',
         }
-    ]
+    ],
+    // 对于所有路由导航，简单地让页面滚动到顶部
+    scrollBehavior() {
+        return { x: 0, y: 0 }
+    }
 })
