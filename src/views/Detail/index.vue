@@ -102,12 +102,22 @@
             </div>
             <div class="cartWrap">
               <div class="controls">
-                <input autocomplete="off" class="itxt" />
-                <a href="javascript:" class="plus">+</a>
-                <a href="javascript:" class="mins">-</a>
+                <input
+                  autocomplete="off"
+                  class="itxt"
+                  v-model="skuNum"
+                  @change="changeSkuNum"
+                />
+                <a href="javascript:" class="plus" @click="skuNum++">+</a>
+                <a
+                  href="javascript:"
+                  class="mins"
+                  @click="skuNum > 1 ? skuNum-- : (skuNum = 1)"
+                  >-</a
+                >
               </div>
               <div class="add">
-                <a href="javascript:">加入购物车</a>
+                <a @click="addToCart">加入购物车</a>
               </div>
             </div>
           </div>
@@ -361,6 +371,11 @@ export default {
   computed: {
     ...mapGetters(["categoryView", "skuInfo", "spuSaleAttrList"]),
   },
+  data() {
+    return {
+      skuNum: 1, // 购买商品的个数
+    };
+  },
   methods: {
     // 产品的售卖属性值切换高亮
     changeAttrActive(saleAttrValue, arr) {
@@ -368,6 +383,26 @@ export default {
         e.isChecked = 0;
       });
       saleAttrValue.isChecked = 1;
+    },
+    changeSkuNum(e) {
+      let value = e.target.value * 1;
+      if (isNaN(value * 1) || value < 1) {
+        // 如果输入的是非法的，或者小于 1
+        this.skuNum = 1;
+      } else {
+        // 保证 skuNum 为正整数
+        this.skuNum = parseInt(value);
+      }
+    },
+    async addToCart() {
+      try {
+        let result = await this.$store.dispatch("addToCart", {
+          skuID: this.$route.params.skuid,
+          skuNum: this.skuNum,
+        });
+      } catch (error) {
+        alert(error.message);
+      }
     },
   },
   mounted() {

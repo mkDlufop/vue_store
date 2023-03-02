@@ -1,4 +1,4 @@
-import { reqGoodsDetail } from "@/api";
+import { reqGoodsDetail, reqAddToCart } from "@/api";
 
 const state = {
   goodsDetail: {},
@@ -15,6 +15,12 @@ const actions = {
     if (result.code === 200) {
       commit("GETGOODSDETAIL", result.data);
     }
+  },
+  // 将商品添加到购物车中
+  async addToCart({ commit }, { skuID, skuNum }) {
+    let result = await reqAddToCart(skuID, skuNum);
+    if (result.code === 200) return "OK"
+    else return Promise.reject(new Error("Failed"));
   }
 };
 const getters = {
