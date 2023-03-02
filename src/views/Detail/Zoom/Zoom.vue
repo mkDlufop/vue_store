@@ -1,11 +1,11 @@
 <template>
   <div class="spec-preview">
     <img :src="imgObj.imgUrl" />
-    <div class="event"></div>
+    <div class="event" @mousemove="mousemoveHandler"></div>
     <div class="big">
-      <img :src="imgObj.imgUrl" />
+      <img :src="imgObj.imgUrl" ref="big" />
     </div>
-    <div class="mask"></div>
+    <div class="mask" ref="mask"></div>
   </div>
 </template>
 
@@ -15,8 +15,40 @@ export default {
   props: ["skuImageList"],
   computed: {
     imgObj() {
-      return this.skuImageList[0] || {};
+      return this.skuImageList[this.currentIndex] || {};
     },
+  },
+  data() {
+    return {
+      currentIndex: 0,
+    };
+  },
+  methods: {
+    mousemoveHandler(e) {
+      let mask = this.$refs.mask;
+      let big = this.$refs.big;
+
+      let left = e.offsetX - mask.offsetWidth / 2;
+      let top = e.offsetY - mask.offsetHeight / 2;
+      // 约束蒙板的范围
+      if (left < 0) left = 0;
+      if (left > mask.offsetWidth) left = mask.offsetWidth;
+      if (top < 0) top = 0;
+      if (top > mask.offsetHeight) top = mask.offsetHeight;
+      // 修改元素的 left top 属性值
+      mask.style.left = left + "px";
+      mask.style.top = top + "px";
+      big.style.left = -2 * left + "px";
+      big.style.top = -2 * top + "px";
+    },
+  },
+  mounted() {
+    this.$bus.$on("getIndex", (index) => {
+      this.currentIndex = index;
+    });
+  },
+  beforeDestroy() {
+    this.$bus.$off("getIndex");
   },
 };
 </script>
