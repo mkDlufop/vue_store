@@ -31,6 +31,7 @@ import Login from '@/views/Login'
 import Register from '@/views/Register'
 import Search from '@/views/Search'
 import Detail from '@/views/Detail'
+import AddCartSuccess from '@/views/AddCartSuccess'
 
 export default new VueRouter({
     routes: [
@@ -66,6 +67,14 @@ export default new VueRouter({
         {
             path: '/detail/:skuid',
             component: Detail,
+            meta: {
+                HomeFooterShow: true,
+            }
+        },
+        {
+            path: '/addcartsuccess',
+            name: 'addcartsuccess',
+            component: AddCartSuccess,
             meta: {
                 HomeFooterShow: true,
             }

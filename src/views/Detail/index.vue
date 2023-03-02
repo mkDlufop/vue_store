@@ -396,9 +396,14 @@ export default {
     },
     async addToCart() {
       try {
-        let result = await this.$store.dispatch("addToCart", {
+        await this.$store.dispatch("addToCart", {
           skuID: this.$route.params.skuid,
           skuNum: this.skuNum,
+        });
+        sessionStorage.setItem("SKUINFO", JSON.stringify(this.skuInfo));
+        this.$router.push({
+          name: "addcartsuccess",
+          query: { skuNum: this.skuNum },
         });
       } catch (error) {
         alert(error.message);
