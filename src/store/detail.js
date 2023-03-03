@@ -1,7 +1,10 @@
 import { reqGoodsDetail, reqAddToCart } from "@/api";
+import { getUUID } from "@/utils/uuid_token";
 
 const state = {
   goodsDetail: {},
+  // 用来代表游客的临时身份
+  uuid_token: getUUID(),
 };
 const mutations = {
   GETGOODSDETAIL(state, goodsDetail) {
