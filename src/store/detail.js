@@ -20,8 +20,8 @@ const actions = {
     }
   },
   // 将商品添加到购物车中
-  async addToCart({ commit }, { skuID, skuNum }) {
-    let result = await reqAddToCart(skuID, skuNum);
+  async addToCart({ commit }, { skuId, skuNum }) {
+    let result = await reqAddToCart(skuId, skuNum);
     if (result.code === 200) return "OK"
     else return Promise.reject(new Error("Failed"));
   }
