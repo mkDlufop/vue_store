@@ -44,3 +44,6 @@ export const reqGetCode = (phone) => requests({ url: `/user/passport/sendCode/${
 
 // 用户注册
 export const reqUserRegister = (data) => requests({ url: "/user/passport/register", data, method: "post", });
+
+// 用户登陆
+export const reqUserLogin = (data) => requests({ url: "/user/passport/login", data, method: "post", });
