@@ -7,7 +7,7 @@
         <div class="container">
           <div class="loginList">
             <p>尚品汇欢迎您！</p>
-            <p>
+            <p v-if="!userName">
               <span>请</span>
               <!-- <a href="###">登录</a> -->
               <!-- <a href="###" class="register">免费注册</a> -->
@@ -16,6 +16,10 @@
               <router-link to="/register" class="register"
                 >免费注册</router-link
               >
+            </p>
+            <p v-else>
+              <a href="#none">{{ userName }}</a>
+              <a href="#none" class="register" @click="logout">退出登录</a>
             </p>
           </div>
           <div class="typeList">
@@ -67,6 +71,12 @@ export default {
       keyword: "",
     };
   },
+  computed: {
+    // 用户名
+    userName() {
+      return this.$store.state.user.userInfo.name;
+    },
+  },
   methods: {
     goSearch() {
       // 指定 params 参数可传可不传，如果传递空串，url 会出问题，此时可使用 undefined 解决
@@ -76,6 +86,15 @@ export default {
         params: { keyword: this.keyword || undefined },
         query: this.$route.query,
       });
+    },
+    // 退出登录
+    async logout() {
+      try {
+        await this.$store.dispatch("userLogout");
+        this.$router.push("/home");
+      } catch (error) {
+        alert(error.message);
+      }
     },
   },
   mounted() {
