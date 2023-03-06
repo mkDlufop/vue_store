@@ -72,14 +72,33 @@ export default [
     component: Trade,
     meta: {
       HomeFooterShow: true,
-    }
+    },
+    // 路由独享守卫
+    beforeEnter: (to, from, next) => {
+      // 去交易页面，必须是从购物车页面来
+      if (from.path == "/shopcart") {
+        next();
+      } else {
+        // 如果是从其他的路由组件而来，则停留在当前路由
+        next(false);
+      }
+    },
   },
   {
     path: '/pay',
     component: Pay,
     meta: {
       HomeFooterShow: true,
-    }
+    },
+    beforeEnter: (to, from, next) => {
+      // 去支付页面，必须是从交易页面来
+      if (from.path == "/trade") {
+        next();
+      } else {
+        // 如果是从其他的路由组件而来，则停留在当前路由
+        next(false);
+      }
+    },
   },
   {
     path: '/paysuccess',
