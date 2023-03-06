@@ -74,7 +74,7 @@
         <div class="hr"></div>
 
         <div class="submit">
-          <router-link class="btn" to="/paysuccess">立即支付</router-link>
+          <a class="btn" @click="open">立即支付</a>
         </div>
         <div class="otherpay">
           <div class="step-tit">
@@ -107,6 +107,16 @@ export default {
     async getPayInfo() {
       let result = await this.$API.reqPayInfo(this.orderId);
       this.payInfo = result.data;
+    },
+    open() {
+      this.$alert("<strong>这是 <i>HTML</i> 片段</strong>", "HTML 片段", {
+        dangerouslyUseHTMLString: true,
+        center: true,
+        showCancelButton: true,
+        cancelButtonText: "支付遇见问题",
+        confirmButtonText: "已支付成功",
+        showClose: false,
+      });
     },
   },
   mounted() {

@@ -8,6 +8,10 @@ import '@/mock/mockServer'
 
 import * as API from '@/api'
 
+import { MessageBox } from 'element-ui';
+Vue.prototype.$msgbox = MessageBox;
+Vue.prototype.$alert = MessageBox.alert;
+
 Vue.config.productionTip = false
 
 new Vue({
