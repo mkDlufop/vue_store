@@ -92,12 +92,15 @@
 
 <script>
 import QRCode from "qrcode";
+import { reqPayStatus } from "@/api";
 
 export default {
   name: "Pay",
   data() {
     return {
       payInfo: {},
+      timer: null,
+      code: "",
     };
   },
   computed: {
@@ -119,7 +122,41 @@ export default {
         cancelButtonText: "支付遇见问题",
         confirmButtonText: "已支付成功",
         showClose: false,
+        beforeClose: (type, instance, done) => {
+          if (type == "cancel") {
+            alert("请联系管理员");
+            // 清除定时器
+            clearInterval(this.timer);
+            this.timer = null;
+            // 关闭弹出框
+            done();
+          } else {
+            // if (this.code == 200) {
+            // 清除定时器
+            clearInterval(this.timer);
+            this.timer = null;
+            // 关闭弹出框
+            done();
+            this.$router.push("/paysuccess");
+            // }
+          }
+        },
       });
+      if (!this.timer) {
+        // 开启一个定时器
+        this.timer = setInterval(async () => {
+          let result = await this.$API.reqPayStatus(this.orderId);
+          if (result.code == 200) {
+            // 清除定时器
+            clearInterval(this.timer);
+            this.timer = null;
+
+            this.code = result.code;
+            this.$msgbox.close();
+            this.$router.push("/paysuccess");
+          }
+        }, 1000);
+      }
     },
   },
   mounted() {
