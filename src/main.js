@@ -12,6 +12,12 @@ import { MessageBox } from 'element-ui';
 Vue.prototype.$msgbox = MessageBox;
 Vue.prototype.$alert = MessageBox.alert;
 
+import loadimage from "@/assets/loading.gif";
+import VueLazyload from 'vue-lazyload';
+Vue.use(VueLazyload, {
+  loading: loadimage,
+})
+
 Vue.config.productionTip = false
 
 new Vue({
