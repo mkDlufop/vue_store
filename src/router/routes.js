@@ -5,6 +5,8 @@ import Search from '@/views/Search'
 import Detail from '@/views/Detail'
 import AddCartSuccess from '@/views/AddCartSuccess'
 import ShopCart from '@/views/ShopCart'
+import Trade from '@/views/Trade'
+import Pay from '@/views/Pay'
 
 export default [
   {
@@ -52,8 +54,22 @@ export default [
     }
   },
   {
-    path: '/shopcart/',
+    path: '/shopcart',
     component: ShopCart,
+    meta: {
+      HomeFooterShow: true,
+    }
+  },
+  {
+    path: '/trade',
+    component: Trade,
+    meta: {
+      HomeFooterShow: true,
+    }
+  },
+  {
+    path: '/pay',
+    component: Pay,
     meta: {
       HomeFooterShow: true,
     }
