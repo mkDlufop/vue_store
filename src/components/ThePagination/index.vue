@@ -31,7 +31,7 @@
       {{ totalPage }}
     </button>
     <button
-      :disabled="pageNo == total"
+      :disabled="pageNo == totalPage"
       @click="$emit('clickPageNo', pageNo + 1)"
     >
       下一页
