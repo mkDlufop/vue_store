@@ -11,9 +11,14 @@ import Pay from '@/views/Pay'
 import PaySuccess from '@/views/PaySuccess'
 import Center from '@/views/Center'
 
-// 引入一级路由组件
-import MyOrder from '@/views/Center/MyOrder'
-import GroupOrder from '@/views/Center/GroupOrder'
+// 引入二级路由组件
+// import MyOrder from '@/views/Center/MyOrder'
+// import GroupOrder from '@/views/Center/GroupOrder'
+
+// 路由懒加载：
+//    当打包构建应用时，JavaScript 包会变得非常大，影响页面加载。
+//    如果我们能把不同路由对应的组件分割成不同的代码块，然后当路由被访问的时候才加载对应组件，
+//    这样就更加高效了。
 
 export default [
   {
@@ -117,11 +122,11 @@ export default [
     children: [
       {
         path: 'myorder',
-        component: MyOrder,
+        component: () => import('@/views/Center/MyOrder'), // 路由懒加载
       },
       {
         path: 'grouporder',
-        component: GroupOrder,
+        component: () => import('@/views/Center/GroupOrder'), // 路由懒加载
       },
       {
         path: '/center',
