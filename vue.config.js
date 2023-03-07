@@ -9,6 +9,7 @@ module.exports = defineConfig({
     proxy: {
       '/api': {
         // target: 'http://39.98.123.211',
+        // 账号密码最好用这个： 账：13700000000 密：111111
         target: "http://gmall-h5-api.atguigu.cn",
         // pathRewrite: { '^/api': '' },
       },
